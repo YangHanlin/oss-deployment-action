@@ -14,8 +14,9 @@ inputs:
     description: 'AccessKey secret of the user identified by the previous AccessKey ID'
     required: true
   local-path:
-    description: 'Local path to files for deployment'
-    required: true
+    description: 'Local path to files for deployment (absolute path or relative path to workspace)'
+    required: false
+    default: '.'
   ignored-patterns:
     description: 'Patterns of files to ignore in deployment; default to .git*'
     required: false
