@@ -16,6 +16,10 @@ inputs:
   local-path:
     description: 'Local path to files for deployment'
     required: true
+  ignored-patterns:
+    description: 'Patterns of files to ignore in deployment; default to .git*'
+    required: false
+    default: '.git*'
   delete-first:
     description: '(⚠ CAUTION) Whether to delete files in the specified location before deployment; default to false'
     required: false
