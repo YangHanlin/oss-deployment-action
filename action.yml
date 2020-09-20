@@ -36,7 +36,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: $/bin/setup-environment.sh
+    - run: ${{ github.action_path }}/bin/setup-environment.sh
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
@@ -46,14 +46,14 @@ runs:
         DELETE_FIRST: ${{ inputs.delete-first }}
         _OSSUTIL_DOWNLOAD_URL: ${{ inputs.internal-ossutil-download-url }}
         _OSSUTIL_WORKSPACE: ${{ inputs.internal-ossutil-workspace }}
-    - run: $/bin/download-ossutil.sh
+    - run: ${{ github.action_path }}/bin/download-ossutil.sh
       shell: bash
-    - run: $/bin/setup-credentials.sh
+    - run: ${{ github.action_path }}/bin/setup-credentials.sh
       shell: bash
       env:
         OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
         OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
-    - run: $/bin/deploy.sh
+    - run: ${{ github.action_path }}/bin/deploy.sh
       shell: bash
-    - run: $/bin/clear-credentials.sh
+    - run: ${{ github.action_path }}/bin/clear-credentials.sh
       shell: bash
