@@ -1,0 +1,6 @@
+name: 'Deploy files to OSS'
+description: 'GitHub Action to deploy static files to OSS'
+runs:
+  using: 'composite'
+  steps:
+    - run: 'echo This GitHub Action is currently under construction.'
