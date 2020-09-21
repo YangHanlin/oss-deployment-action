@@ -11,7 +11,7 @@ if [[ $DELETE_FIRST == true ]]; then
         "$OSS_PATH"
 fi
 
-echo -e "\033[34mRemoving ignored file\033[0ms" && \
+echo -e "\033[34mRemoving ignored files\033[0m" && \
 mkdir -p "$_OSSUTIL_BACKUP_DIR" && \
 mv $IGNORED_PATTERNS "$_OSSUTIL_BACKUP_DIR/" && \
 echo -e "\033[34mUploading files\033[0m" && \
