@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 
+echo "::group::Set up environment"
+
 # Expand paths
+
+echo -e "\033[34mExpanding paths\033[0m"
 
 LOCAL_PATH=${LOCAL_PATH/#~/$HOME}
 _OSSUTIL_WORKSPACE=${_OSSUTIL_WORKSPACE/#~/$HOME}
 
 # Export common environment variables
+
+echo -e "\033[34mExporting environment variables to be used in later steps\033[0m"
 
 echo "::set-env name=OSS_ENDPOINT::$OSS_ENDPOINT"
 echo "::set-env name=OSS_PATH::$OSS_PATH"
@@ -22,6 +28,10 @@ echo "::set-env name=_OSSUTIL_BACKUP_DIR::$_OSSUTIL_WORKSPACE/backup_dir"
 
 # Create ossutil workspace (if not exist)
 
+echo -e "\033[34mCreating workspace for ossutil\033[0m"
+
 if [[ -n $_OSSUTIL_WORKSPACE ]]; then
     mkdir -p "$_OSSUTIL_WORKSPACE"
 fi
+
+echo "::endgroup::"
