@@ -28,7 +28,7 @@ inputs:
   internal-ossutil-download-url:
     description: '(🔒 INTERNAL) URL to download ossutil'
     required: false
-    default: 'http://gosspublic.alicdn.com/ossutil/1.6.19/ossutil64'
+    default: 'https://gosspublic.alicdn.com/ossutil/1.6.19/ossutil64'
   internal-ossutil-workspace:
     description: '(🔒 INTERNAL) Path to workspace of ossutil which contains the credentials and other files'
     required: false
