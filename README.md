@@ -4,6 +4,8 @@ This GitHub Action deploys static files to Aliyun (or Alibaba Cloud) OSS.
 
 ## Quick start
 
+1. Create the directory `.github/workflows` (if not exist);
+
 1. Run the following command to get an example workflow configuration:
 
     ```sh
