@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Expand paths
+
+LOCAL_PATH=${LOCAL_PATH/#~/$HOME}
+_OSSUTIL_WORKSPACE=${_OSSUTIL_WORKSPACE/#~/$HOME}
+
 # Export common environment variables
 
 echo "::set-env name=OSS_ENDPOINT::$OSS_ENDPOINT"

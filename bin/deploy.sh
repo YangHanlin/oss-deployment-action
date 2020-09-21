@@ -11,9 +11,9 @@ fi
 mkdir -p "$_OSSUTIL_BACKUP_DIR" && \
 mv $IGNORED_PATTERNS "$_OSSUTIL_BACKUP_DIR/" && \
 "$_OSSUTIL" cp \
-    --config-files="$_OSSUTIL_CONFIG_FILE" \
+    --config-file="$_OSSUTIL_CONFIG_FILE" \
     --recursive \
     --update \
     "$LOCAL_PATH" \
     "$OSS_PATH" && \
-mv "$_OSSUTIL_BACKUP_DIR/*" .
+(mv "$_OSSUTIL_BACKUP_DIR"/{*,.[^.]*} ./ || true)
