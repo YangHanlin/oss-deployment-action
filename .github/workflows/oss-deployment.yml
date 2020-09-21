@@ -1,0 +1,56 @@
+# Example workflow to use YangHanlin/oss-deployment-action
+
+# Name of the workflow; change to anything if you like
+name: Deploy to OSS
+
+# Controls when the action will run. Triggers the workflow on push events but only for
+# the main branch
+on:
+  push:
+    branches: [ gh-pages ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "deploy"
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      # Caches the executable of ossutil to avoid downloading again; disabled by
+      # default, uncomment the following step to enable caching
+      - name: Cache ossutil
+        uses: actions/cache@v2
+        with:
+          path: /home/runner/ossutil/ossutil
+          key: ossutil-linux-amd64
+
+      # Deploys specified files to OSS
+      - name: Deploy files to OSS
+        use: Yanghanlin/oss-deployment-action@v1
+        with:
+          # Endpoint of "Access over Internet", e.g. oss-cn-hangzhou.aliyuncs.com
+          oss-endpoint: oss-cn-hangzhou.aliyuncs.com
+          # Path to location you wish to deploy files to, e.g. oss://my-bucket/my-dir
+          oss-path: oss://tree-diagram-pages/oss-deployment-action/
+          # Access Key ID of a Aliyun/Alibaba Cloud user with write access to OSS
+          oss-accesskey-id: LTAI4FzrEJA5duCxjit3EEuv
+          # Access Key secret of the user identified by the previous Access Key ID
+          # Do NOT directly record the secret here; use secrets provided by GitHub
+          # and reference by its name instead
+          oss-accesskey-secret: ${{ secrets.OSS_ACCESSKEY_SECRET }}
+          # Path to location in the repository workspace to deploy files from
+          # Optional; deploys the entire workspace by default; uncomment the following
+          # line to customize
+          # local-path: '.'
+          # Patterns to ignore files from deployment
+          # Optional; ignore .git* by default; uncomment the following line to customize
+          # ignore-patterns: '.git*'
+          # Whether to delete existing files before uploading
+          # Optional; false by default; uncomment to following line to customize
+          delete-first: true
