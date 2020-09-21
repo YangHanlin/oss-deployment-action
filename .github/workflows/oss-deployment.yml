@@ -32,7 +32,7 @@ jobs:
 
       # Deploys specified files to OSS
       - name: Deploy files to OSS
-        use: Yanghanlin/oss-deployment-action@v1
+        uses: Yanghanlin/oss-deployment-action@v1
         with:
           # Endpoint of "Access over Internet", e.g. oss-cn-hangzhou.aliyuncs.com
           oss-endpoint: oss-cn-hangzhou.aliyuncs.com
