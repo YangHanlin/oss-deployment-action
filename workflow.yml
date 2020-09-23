@@ -52,5 +52,5 @@ jobs:
           # Optional; ignore .git* by default; uncomment the following line to customize
           # ignore-patterns: '.git*'
           # Whether to delete existing files before uploading
-          # Optional; false by default; uncomment to following line to customize
+          # Optional; false by default; uncomment the following line to customize
           # delete-first: false
