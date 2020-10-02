@@ -26,9 +26,14 @@ jobs:
       # default, uncomment the following step to enable caching
       # - name: Cache ossutil
       #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: cache-ossutil
       #   with:
       #     path: /home/runner/ossutil/ossutil
-      #     key: ossutil-linux-amd64
+      #     key: ossutil64-${{ runner.os }}-${{ env.cache-name }}
+      #     restore-keys: |
+      #       ossutil64-${{ runner.os }}-
+      #       ossutil64-
 
       # Deploys specified files to OSS
       - name: Deploy files to OSS
