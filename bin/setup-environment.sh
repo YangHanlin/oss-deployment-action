@@ -13,18 +13,18 @@ _OSSUTIL_WORKSPACE=${_OSSUTIL_WORKSPACE/#~/$HOME}
 
 echo -e "\033[34mExporting environment variables to be used in later steps\033[0m"
 
-echo "::set-env name=OSS_ENDPOINT::$OSS_ENDPOINT"
-echo "::set-env name=OSS_PATH::$OSS_PATH"
-echo "::set-env name=LOCAL_PATH::$LOCAL_PATH"
-echo "::set-env name=IGNORED_PATTERNS::$IGNORED_PATTERNS"
-echo "::set-env name=DELETE_FIRST::$DELETE_FIRST"
+echo "OSS_ENDPOINT=$OSS_ENDPOINT" >>$GITHUB_ENV
+echo "OSS_PATH=$OSS_PATH" >>$GITHUB_ENV
+echo "LOCAL_PATH=$LOCAL_PATH" >>$GITHUB_ENV
+echo "IGNORED_PATTERNS=$IGNORED_PATTERNS" >>$GITHUB_ENV
+echo "DELETE_FIRST=$DELETE_FIRST" >>$GITHUB_ENV
 
-echo "::set-env name=_OSSUTIL_DOWNLOAD_URL::$_OSSUTIL_DOWNLOAD_URL"
-echo "::set-env name=_OSSUTIL_WORKSPACE::$_OSSUTIL_WORKSPACE"
-echo "::set-env name=_OSSUTIL::$_OSSUTIL_WORKSPACE/ossutil"
-echo "::set-env name=_OSSUTIL_CONFIG_FILE::$_OSSUTIL_WORKSPACE/.ossutilconfig"
-echo "::set-env name=_OSSUTIL_OUTPUT_DIR::$_OSSUTIL_WORKSPACE/output_dir"
-echo "::set-env name=_OSSUTIL_BACKUP_DIR::$_OSSUTIL_WORKSPACE/backup_dir"
+echo "_OSSUTIL_DOWNLOAD_URL=$_OSSUTIL_DOWNLOAD_URL" >>$GITHUB_ENV
+echo "_OSSUTIL_WORKSPACE=$_OSSUTIL_WORKSPACE" >>$GITHUB_ENV
+echo "_OSSUTIL=$_OSSUTIL_WORKSPACE/ossutil" >>$GITHUB_ENV
+echo "_OSSUTIL_CONFIG_FILE=$_OSSUTIL_WORKSPACE/.ossutilconfig" >>$GITHUB_ENV
+echo "_OSSUTIL_OUTPUT_DIR=$_OSSUTIL_WORKSPACE/output_dir" >>$GITHUB_ENV
+echo "_OSSUTIL_BACKUP_DIR=$_OSSUTIL_WORKSPACE/backup_dir" >>$GITHUB_ENV
 
 # Create ossutil workspace (if not exist)
 
