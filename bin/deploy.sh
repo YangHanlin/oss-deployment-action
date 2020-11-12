@@ -13,7 +13,7 @@ fi
 
 echo -e "\033[34mRemoving ignored files\033[0m" && \
 mkdir -p "$_OSSUTIL_BACKUP_DIR" && \
-mv $IGNORED_PATTERNS "$_OSSUTIL_BACKUP_DIR/" && \
+(mv $IGNORED_PATTERNS "$_OSSUTIL_BACKUP_DIR/" || true) && \
 echo -e "\033[34mUploading files\033[0m" && \
 "$_OSSUTIL" cp \
     --config-file="$_OSSUTIL_CONFIG_FILE" \
