@@ -44,11 +44,13 @@ jobs:
           # Path to location you wish to deploy files to, e.g. oss://my-bucket/my-dir
           oss-path: oss://BUCKET/PATH
           # Access Key ID of a Aliyun/Alibaba Cloud user with write access to OSS
-          oss-accesskey-id: XXXXXXXXXXXX
+          # It is recommended to use secrets provided by GitHub and reference by its
+          # name in this field
+          oss-accesskey-id: ${{ secrets.OSS_ACCESSKEY_ID }}
           # Access Key secret of the user identified by the previous Access Key ID
           # Do NOT directly record the secret here; use secrets provided by GitHub
           # and reference by its name instead
-          oss-accesskey-secret: ${{ secrets.SECRET_NAME }}
+          oss-accesskey-secret: ${{ secrets.OSS_ACCESSKEY_SECRET }}
           # Path to location in the repository workspace to deploy files from
           # Optional; deploys the entire workspace by default; uncomment the following
           # line to customize
