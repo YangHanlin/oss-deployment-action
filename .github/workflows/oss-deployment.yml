@@ -42,7 +42,7 @@ jobs:
           # Endpoint of "Access over Internet", e.g. oss-cn-hangzhou.aliyuncs.com
           oss-endpoint: oss-cn-hangzhou.aliyuncs.com
           # Path to location you wish to deploy files to, e.g. oss://my-bucket/my-dir
-          oss-path: oss://tree-diagram-pages/oss-deployment-action/
+          oss-path: oss://tree-diagram-sites/oss-deployment-action/
           # Access Key ID of a Aliyun/Alibaba Cloud user with write access to OSS
           oss-accesskey-id: LTAI4FzrEJA5duCxjit3EEuv
           # Access Key secret of the user identified by the previous Access Key ID
