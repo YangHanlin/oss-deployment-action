@@ -9,7 +9,7 @@ This GitHub Action deploys static files to Aliyun (or Alibaba Cloud) OSS.
 1. Run the following command to get a [template workflow configuration](https://github.com/YangHanlin/oss-deployment-action/blob/gh-pages/workflow.yml):
 
     ```sh
-    curl -L u.nu/oss-deploy-workflow >.github/workflows/oss-deployment.yml
+    curl -sSL bit.ly/oss-deployment-action-example >.github/workflows/oss-deployment.yml
     ```
 
     > The template workflow configuration is hosted on GitHub Pages with Cloudflare CDN as well as Aliyun OSS with Aliyun CDN (synced with this GitHub Action). The URL provided above will direct you to Aliyun OSS if you are from mainland China and Cloudflare otherwise (using [Geoteleport](https://github.com/YangHanlin/geoteleport)) to get fast speed in both cases.
