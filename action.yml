@@ -56,6 +56,7 @@ runs:
       id: prepare-variables
       env:
         OSSUTIL_VERSION: 1.7.14
+        DEBUG: ${{ inputs.debug }}
     - name: Set up cache
       uses: actions/cache@v3
       if: inputs.cache-ossutil == 'true'
