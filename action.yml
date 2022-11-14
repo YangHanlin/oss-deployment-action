@@ -43,7 +43,7 @@ inputs:
     required: false
     default: 'false'
   debug:
-    description: 'Whether to enable debug logging; recommended to set to ${{ secrets.ACTIONS_STEP_DEBUG }} to align with debug logging option provided by GitHub Actions'
+    description: 'Whether to enable debug logging'
     required: false
     default: 'false'
 
