@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+
+if [[ "$DEBUG" == "true" ]]; then
+    set -x
+fi
+
 # Utilities
 
 start_group() {
@@ -133,8 +139,6 @@ clear_environment() {
 
     end_group
 }
-
-set -e
 
 setup_environment
 perform_deployment

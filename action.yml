@@ -32,6 +32,10 @@ inputs:
     description: 'Whether to force download and configure ossutil'
     required: false
     default: 'false'
+  debug:
+    description: 'Whether to enable debug logging'
+    required: false
+    default: 'false'
 runs:
   using: 'composite'
   steps:
@@ -46,4 +50,5 @@ runs:
         IGNORED_PATTERNS: ${{ inputs.ignored-patterns }}
         DELETE_FIRST: ${{ inputs.delete-first }}
         FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
+        DEBUG: ${{ inputs.DEBUG }}
         OSSUTIL_DOWNLOAD_URL: https://gosspublic.alicdn.com/ossutil/1.7.14/ossutil64
