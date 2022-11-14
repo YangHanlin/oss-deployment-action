@@ -98,7 +98,9 @@ remove_ignored_files() {
     log "Removing ignored files"
     BACKUP_DIR="$WORKSPACE/backup-$(date +%s)"
     mkdir -p "$BACKUP_DIR"
+    shopt -s nullglob
     mv $IGNORED_PATTERNS "$BACKUP_DIR/" || true
+    shopt -u nullglob
 }
 
 upload_files() {
@@ -112,7 +114,9 @@ upload_files() {
 
 restore_ignored_files() {
     log "Restoring ignored files"
-    (mv "$BACKUP_DIR"/{*,.[^.]*} ./ || true)
+    shopt -s nullglob
+    mv "$BACKUP_DIR"/{*,.[^.]*} ./ || true
+    shopt -u nullglob
 }
 
 perform_deployment() {
