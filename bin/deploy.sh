@@ -45,6 +45,7 @@ try_ossutil() {
 setup_ossutil() {
     log "Setting up ossutil"
 
+    OSSUTIL_DOWNLOAD_URL="https://gosspublic.alicdn.com/ossutil/$OSSUTIL_VERSION/ossutil64"
     OSSUTIL_BINARY="$WORKSPACE/ossutil"
     OSSUTIL_CONFIG_FILE="$WORKSPACE/.ossutilconfig"
     OSSUTIL_OUTPUT_DIR="$WORKSPACE/ossutil-output"

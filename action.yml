@@ -56,4 +56,4 @@ runs:
         DELETE_FIRST: ${{ inputs.delete-first }}
         FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
         DEBUG: ${{ inputs.DEBUG }}
-        OSSUTIL_DOWNLOAD_URL: https://gosspublic.alicdn.com/ossutil/1.7.14/ossutil64
+        OSSUTIL_VERSION: 1.7.14
