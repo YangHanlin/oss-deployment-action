@@ -25,7 +25,7 @@ log() {
 setup_workspace() {
     log "Setting up workspace"
 
-    WORKSPACE="$(mktemp -d)"
+    WORKSPACE="$RUNNER_TEMP/oss-deployment-action"
     mkdir -p "$WORKSPACE"
 }
 
