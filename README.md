@@ -93,4 +93,4 @@ If you'd like to have more control over the version and configuration of `ossuti
 
 All contents in this repository, unless otherwise noted, are licensed under [MIT](LICENSE).
 
-This repository is not affliated with Alibaba Cloud.
+This repository is not affiliated with Alibaba Cloud.
