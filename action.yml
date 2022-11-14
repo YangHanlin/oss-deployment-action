@@ -13,6 +13,10 @@ inputs:
     description: 'AccessKey secret of the user identified by the previous AccessKey ID (required if ossutil is not configured)'
     required: false
     default: ''
+  oss-sts-token:
+    description: 'STS token (required only if using STS and ossutil is not configured)'
+    required: false
+    default: ''
   oss-path:
     description: 'Path to the location you wish to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
     required: true
@@ -45,6 +49,7 @@ runs:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
         OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
         OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
+        OSS_STS_TOKEN: ${{ inputs.oss-sts-token }}
         OSS_PATH: ${{ inputs.oss-path }}
         LOCAL_PATH: ${{ inputs.local-path }}
         IGNORED_PATTERNS: ${{ inputs.ignored-patterns }}

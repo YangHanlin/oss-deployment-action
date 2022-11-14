@@ -55,11 +55,33 @@ setup_ossutil() {
     chmod u+x "$OSSUTIL_BINARY"
 
     log "Configuring ossutil"
-    $OSSUTIL config \
-        --access-key-id="$OSS_ACCESSKEY_ID" \
-        --access-key-secret="$OSS_ACCESSKEY_SECRET" \
-        --endpoint="$OSS_ENDPOINT" \
-        --output-dir="$OSSUTIL_OUTPUT_DIR"
+    CONFIG_OPTIONS=(
+        "--output-dir=$OSSUTIL_OUTPUT_DIR"
+    )
+    if [[ "$OSS_ENDPOINT" != "" ]]; then
+        CONFIG_OPTIONS+=(
+            "--endpoint=$OSS_ENDPOINT"
+        )
+    else
+        log "Error: 'oss-endpoint' is required but not provided"
+        exit 1
+    fi
+    if [[ "$OSS_ACCESSKEY_ID" != "" ]]; then
+        CONFIG_OPTIONS+=(
+            "--access-key-id=$OSS_ACCESSKEY_ID"
+        )
+    fi
+    if [[ "$OSS_ACCESSKEY_SECRET" != "" ]]; then
+        CONFIG_OPTIONS+=(
+            "--access-key-secret=$OSS_ACCESSKEY_SECRET"
+        )
+    fi
+    if [[ "$OSS_STS_TOKEN" != "" ]]; then
+        CONFIG_OPTIONS+=(
+            "--sts-token=$OSS_STS_TOKEN"
+        )
+    fi
+    $OSSUTIL config "${CONFIG_OPTIONS[@]}"
     chmod 600 "$OSSUTIL_CONFIG_FILE"
 }
 
