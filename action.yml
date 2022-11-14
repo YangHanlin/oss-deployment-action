@@ -1,59 +1,80 @@
-name: 'Deploy files to OSS'
-description: 'GitHub Action to deploy static files to OSS'
+name: 'OSS Deployment Action'
+author: 'Yang Hanlin'
+description: 'GitHub Action to deploy static files to Aliyun (Alibaba Cloud) OSS'
+
 inputs:
   oss-endpoint:
-    description: 'Endpoint of access over Internet'
-    required: true
-  oss-path:
-    description: 'Path to the location you wish to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
-    required: true
+    description: 'OSS endpoint (required if ossutil is not pre-configured)'
+    required: false
+    default: ''
   oss-accesskey-id:
-    description: 'AccessKey ID of user with write access to OSS'
-    required: true
+    description: 'AccessKey ID of user with write access to OSS (required if ossutil is not pre-configured)'
+    required: false
+    default: ''
   oss-accesskey-secret:
-    description: 'AccessKey secret of the user identified by the previous AccessKey ID'
+    description: 'AccessKey secret of the user identified by the previous AccessKey ID (required if ossutil is not pre-configured)'
+    required: false
+    default: ''
+  oss-sts-token:
+    description: 'STS token (required only if using STS and ossutil is not pre-configured)'
+    required: false
+    default: ''
+  oss-path:
+    description: 'Path to the location you''d like to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
     required: true
   local-path:
-    description: 'Local path to files for deployment (absolute path or relative path to workspace)'
+    description: 'Path to the location you''d like to deploy files from'
     required: false
     default: '.'
   ignored-patterns:
-    description: 'Patterns of files to ignore in deployment; default to .git*'
+    description: 'Blob patterns of files (separated by spaces) to ignore in deployment'
     required: false
-    default: '.git*'
+    default: '.git'
   delete-first:
-    description: '(⚠ CAUTION) Whether to delete files in the specified location before deployment; default to false'
+    description: 'Whether to delete files under `oss-path` before deployment'
     required: false
-    default: false
-  internal-ossutil-download-url:
-    description: '(🔒 INTERNAL) URL to download ossutil'
+    default: 'false'
+  force-setup-ossutil:
+    description: 'Whether to force download and configure even if ossutil is pre-configured'
     required: false
-    default: 'https://gosspublic.alicdn.com/ossutil/1.6.19/ossutil64'
-  internal-ossutil-workspace:
-    description: '(🔒 INTERNAL) Path to workspace of ossutil which contains the credentials and other files'
+    default: 'false'
+  cache-ossutil:
+    description: 'Whether to cache downloaded ossutil'
     required: false
-    default: '~/ossutil'
+    default: 'false'
+  debug:
+    description: 'Whether to enable debug logging; recommended to set to ${{ secrets.ACTIONS_STEP_DEBUG }} to align with debug logging option provided by GitHub Actions'
+    required: false
+    default: 'false'
+
 runs:
   using: 'composite'
   steps:
-    - run: ${{ github.action_path }}/bin/setup-environment.sh
+    - name: Run script to prepare variables
+      run: ${{ github.action_path }}/bin/prepare-variables.sh
+      shell: bash
+      id: prepare-variables
+      env:
+        OSSUTIL_VERSION: 1.7.14
+    - name: Set up cache
+      uses: actions/cache@v3
+      if: inputs.cache-ossutil == 'true'
+      with:
+        path: ${{ steps.prepare-variables.outputs.workspace }}
+        key: ${{ steps.prepare-variables.outputs.cache-key }}
+    - name: Run script to deploy
+      run: ${{ github.action_path }}/bin/deploy.sh
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
+        OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
+        OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
+        OSS_STS_TOKEN: ${{ inputs.oss-sts-token }}
         OSS_PATH: ${{ inputs.oss-path }}
         LOCAL_PATH: ${{ inputs.local-path }}
         IGNORED_PATTERNS: ${{ inputs.ignored-patterns }}
         DELETE_FIRST: ${{ inputs.delete-first }}
-        _OSSUTIL_DOWNLOAD_URL: ${{ inputs.internal-ossutil-download-url }}
-        _OSSUTIL_WORKSPACE: ${{ inputs.internal-ossutil-workspace }}
-    - run: ${{ github.action_path }}/bin/download-ossutil.sh
-      shell: bash
-    - run: ${{ github.action_path }}/bin/setup-credentials.sh
-      shell: bash
-      env:
-        OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
-        OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
-    - run: ${{ github.action_path }}/bin/deploy.sh
-      shell: bash
-    - run: ${{ github.action_path }}/bin/clear-credentials.sh
-      shell: bash
+        FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
+        DEBUG: ${{ inputs.DEBUG }}
+        WORKSPACE: ${{ steps.prepare-variables.outputs.workspace }}
+        OSSUTIL_DOWNLOAD_URL: ${{ steps.prepare-variables.outputs.ossutil-download-url }}
