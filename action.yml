@@ -36,6 +36,10 @@ inputs:
     description: 'Whether to force download and configure ossutil'
     required: false
     default: 'false'
+  cache-ossutil:
+    description: 'Whether to cache ossutil'
+    required: false
+    default: 'false'
   debug:
     description: 'Whether to enable debug logging'
     required: false
@@ -43,6 +47,16 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - run: ${{ github.action_path }}/bin/prepare-variables.sh
+      shell: bash
+      id: prepare-variables
+      env:
+        OSSUTIL_VERSION: 1.7.14
+    - uses: actions/cache@v3
+      if: inputs.cache-ossutil == 'true'
+      with:
+        path: ${{ steps.prepare-variables.outputs.workspace }}
+        key: ${{ steps.prepare-variables.outputs.cache-key }}
     - run: ${{ github.action_path }}/bin/deploy.sh
       shell: bash
       env:
@@ -56,4 +70,5 @@ runs:
         DELETE_FIRST: ${{ inputs.delete-first }}
         FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
         DEBUG: ${{ inputs.DEBUG }}
-        OSSUTIL_VERSION: 1.7.14
+        WORKSPACE: ${{ steps.prepare-variables.outputs.workspace }}
+        OSSUTIL_DOWNLOAD_URL: ${{ steps.prepare-variables.outputs.ossutil-download-url }}

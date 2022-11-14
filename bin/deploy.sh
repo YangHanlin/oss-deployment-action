@@ -1,31 +1,12 @@
 #!/usr/bin/env bash
 
-set -e
-
-if [[ "$DEBUG" == "true" ]]; then
-    set -x
-fi
-
-# Utilities
-
-start_group() {
-    echo "::group::$1"
-}
-
-end_group() {
-    echo "::endgroup::"
-}
-
-log() {
-    echo -e "\033[34m$1\033[0m"
-}
+source "$(dirname $0)/common.sh"
 
 # Set up environment
 
 setup_workspace() {
     log "Setting up workspace"
 
-    WORKSPACE="$RUNNER_TEMP/oss-deployment-action"
     mkdir -p "$WORKSPACE"
 }
 
@@ -45,14 +26,17 @@ try_ossutil() {
 setup_ossutil() {
     log "Setting up ossutil"
 
-    OSSUTIL_DOWNLOAD_URL="https://gosspublic.alicdn.com/ossutil/$OSSUTIL_VERSION/ossutil64"
     OSSUTIL_BINARY="$WORKSPACE/ossutil"
     OSSUTIL_CONFIG_FILE="$WORKSPACE/.ossutilconfig"
     OSSUTIL_OUTPUT_DIR="$WORKSPACE/ossutil-output"
     OSSUTIL="$OSSUTIL_BINARY --config-file=$OSSUTIL_CONFIG_FILE"
 
-    log "Downloading ossutil"
-    curl -L -o "$OSSUTIL_BINARY" "$OSSUTIL_DOWNLOAD_URL"
+    if [[ -f "$OSSUTIL_BINARY" ]]; then
+        log "Using ossutil from cache"
+    else
+        log "Downloading ossutil"
+        curl -L -o "$OSSUTIL_BINARY" "$OSSUTIL_DOWNLOAD_URL"
+    fi
     chmod u+x "$OSSUTIL_BINARY"
 
     log "Configuring ossutil"
