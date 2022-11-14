@@ -21,17 +21,21 @@ The following example might cover most of the use cases.
 ```yaml
       - uses: YangHanlin/oss-deployment-action@v1
         with:
-          # Replace REGION with actual region of the bucket, e.g. oss-cn-hangzhou
-          oss-endpoint: REGION.aliyuncs.com
+          # Replace <REGION> with actual region of the bucket, e.g. oss-cn-hangzhou
+          oss-endpoint: <REGION>.aliyuncs.com
           # It is recommended to set the credentials as GitHub Action secrets
           oss-accesskey-id: ${{ secrets.OSS_ACCESSKEY_ID }}
           oss-accesskey-secret: ${{ secrets.OSS_ACCESSKEY_SECRET }}
           # Uncomment the following line only if STS is used
           # oss-sts-token: ${{ secrets.OSS_STS_TOKEN }}used only when STS is used
-          # Replace BUCKET and PATH with actual bucket name and path
-          oss-path: oss://BUCKET/PATH
+          # Replace <BUCKET> and <PATH> with actual bucket name and path
+          oss-path: oss://<BUCKET>/<PATH>
           # Uncomment the following line if you want to specify a different path to deploy files from; otherwise the current working directory is deployed
-          # local-path: '.'
+          # local-path: <PATH TO FILE/DIRECTORY>
+          # Uncomment the following line if you want to ignore files in deployment; otherwise all files except `.git` will be deployed
+          # ignored-patterns: <GLOBS SEPARATED BY SPACES>
+          # Uncomment the following line to delete all files under `oss-path` before deployment
+          # delete-first: true
           debug: ${{ secrets.ACTIONS_STEP_DEBUG }}
 ```
 
@@ -48,14 +52,20 @@ If you'd like to have more control over the version and configuration of `ossuti
           # or some other customization
           echo "$HOME/.local/bin" >> $GITHUB_PATH
         env:
+          # Replace <REGION> with actual region of the bucket, e.g. oss-cn-hangzhou
+          OSS_ENDPOINT: <REGION>.aliyuncs.com
           OSS_ACCESSKEY_ID: ${{ secrets.OSS_ACCESSKEY_ID }}
           OSS_ACCESSKEY_SECRET: ${{ secrets.OSS_ACCESSKEY_SECRET }}
       - uses: YangHanlin/oss-deployment-action@v1
         with:
-          # Replace BUCKET and PATH with actual bucket name and path
-          oss-path: oss://BUCKET/PATH
+          # Replace <BUCKET> and <PATH> with actual bucket name and path
+          oss-path: oss://<BUCKET>/<PATH>
           # Uncomment the following line if you want to specify a different path to deploy files from; otherwise the current working directory is deployed
-          # local-path: '.'
+          # local-path: <PATH TO FILE/DIRECTORY>
+          # Uncomment the following line if you want to ignore files in deployment; otherwise all files except `.git` will be deployed
+          # ignored-patterns: <GLOBS SEPARATED BY SPACES>
+          # Uncomment the following line to delete all files under `oss-path` before deployment
+          # delete-first: true
           debug: ${{ secrets.ACTIONS_STEP_DEBUG }}
 ```
 
