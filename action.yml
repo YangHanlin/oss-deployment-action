@@ -1,63 +1,69 @@
-name: 'Deploy files to OSS'
-description: 'GitHub Action to deploy static files to OSS'
+name: 'OSS Deployment Action'
+author: 'Yang Hanlin'
+description: 'GitHub Action to deploy static files to Aliyun (Alibaba Cloud) OSS'
+
 inputs:
   oss-endpoint:
-    description: 'Endpoint of access over Internet (required if ossutil is not configured)'
+    description: 'OSS endpoint (required if ossutil is not pre-configured)'
     required: false
     default: ''
   oss-accesskey-id:
-    description: 'AccessKey ID of user with write access to OSS (required if ossutil is not configured)'
+    description: 'AccessKey ID of user with write access to OSS (required if ossutil is not pre-configured)'
     required: false
     default: ''
   oss-accesskey-secret:
-    description: 'AccessKey secret of the user identified by the previous AccessKey ID (required if ossutil is not configured)'
+    description: 'AccessKey secret of the user identified by the previous AccessKey ID (required if ossutil is not pre-configured)'
     required: false
     default: ''
   oss-sts-token:
-    description: 'STS token (required only if using STS and ossutil is not configured)'
+    description: 'STS token (required only if using STS and ossutil is not pre-configured)'
     required: false
     default: ''
   oss-path:
-    description: 'Path to the location you wish to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
+    description: 'Path to the location you''d like to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
     required: true
   local-path:
-    description: 'Local path to files for deployment (absolute path or relative path to workspace)'
+    description: 'Path to the location you''d like to deploy files from'
     required: false
     default: '.'
   ignored-patterns:
-    description: 'Blob patterns of files to ignore in deployment'
+    description: 'Blob patterns of files (separated by spaces) to ignore in deployment'
     required: false
-    default: '.git*'
+    default: '.git'
   delete-first:
-    description: 'Whether to delete files in the specified location before deployment'
+    description: 'Whether to delete files under `oss-path` before deployment'
     required: false
     default: 'false'
   force-setup-ossutil:
-    description: 'Whether to force download and configure ossutil'
+    description: 'Whether to force download and configure even if ossutil is pre-configured'
     required: false
     default: 'false'
   cache-ossutil:
-    description: 'Whether to cache ossutil'
+    description: 'Whether to cache downloaded ossutil'
     required: false
     default: 'false'
   debug:
-    description: 'Whether to enable debug logging'
+    description: 'Whether to enable debug logging; recommended to set to ${{ secrets.ACTIONS_STEP_DEBUG }} to align with debug logging option provided by GitHub Actions'
     required: false
     default: 'false'
+
 runs:
   using: 'composite'
   steps:
-    - run: ${{ github.action_path }}/bin/prepare-variables.sh
+    - name: Run script to prepare variables
+      run: ${{ github.action_path }}/bin/prepare-variables.sh
       shell: bash
       id: prepare-variables
       env:
         OSSUTIL_VERSION: 1.7.14
-    - uses: actions/cache@v3
+    - name: Set up cache
+      uses: actions/cache@v3
       if: inputs.cache-ossutil == 'true'
       with:
         path: ${{ steps.prepare-variables.outputs.workspace }}
         key: ${{ steps.prepare-variables.outputs.cache-key }}
-    - run: ${{ github.action_path }}/bin/deploy.sh
+    - name: Run script to deploy
+      run: ${{ github.action_path }}/bin/deploy.sh
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
