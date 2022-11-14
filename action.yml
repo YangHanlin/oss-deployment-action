@@ -78,3 +78,7 @@ runs:
         DEBUG: ${{ inputs.DEBUG }}
         WORKSPACE: ${{ steps.prepare-variables.outputs.workspace }}
         OSSUTIL_DOWNLOAD_URL: ${{ steps.prepare-variables.outputs.ossutil-download-url }}
+
+branding:
+  color: orange
+  icon: upload-cloud
