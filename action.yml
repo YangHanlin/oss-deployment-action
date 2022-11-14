@@ -2,58 +2,48 @@ name: 'Deploy files to OSS'
 description: 'GitHub Action to deploy static files to OSS'
 inputs:
   oss-endpoint:
-    description: 'Endpoint of access over Internet'
-    required: true
+    description: 'Endpoint of access over Internet (required if ossutil is not configured)'
+    required: false
+    default: ''
+  oss-accesskey-id:
+    description: 'AccessKey ID of user with write access to OSS (required if ossutil is not configured)'
+    required: false
+    default: ''
+  oss-accesskey-secret:
+    description: 'AccessKey secret of the user identified by the previous AccessKey ID (required if ossutil is not configured)'
+    required: false
+    default: ''
   oss-path:
     description: 'Path to the location you wish to deploy files to, i.e. oss://<BUCKET NAME>/<PATH>'
-    required: true
-  oss-accesskey-id:
-    description: 'AccessKey ID of user with write access to OSS'
-    required: true
-  oss-accesskey-secret:
-    description: 'AccessKey secret of the user identified by the previous AccessKey ID'
     required: true
   local-path:
     description: 'Local path to files for deployment (absolute path or relative path to workspace)'
     required: false
     default: '.'
   ignored-patterns:
-    description: 'Patterns of files to ignore in deployment; default to .git*'
+    description: 'Blob patterns of files to ignore in deployment'
     required: false
     default: '.git*'
   delete-first:
-    description: '(⚠ CAUTION) Whether to delete files in the specified location before deployment; default to false'
+    description: 'Whether to delete files in the specified location before deployment'
     required: false
-    default: false
-  internal-ossutil-download-url:
-    description: '(🔒 INTERNAL) URL to download ossutil'
+    default: 'false'
+  force-setup-ossutil:
+    description: 'Whether to force download and configure ossutil'
     required: false
-    default: 'https://gosspublic.alicdn.com/ossutil/1.6.19/ossutil64'
-  internal-ossutil-workspace:
-    description: '(🔒 INTERNAL) Path to workspace of ossutil which contains the credentials and other files'
-    required: false
-    default: '~/ossutil'
+    default: 'false'
 runs:
   using: 'composite'
   steps:
-    - run: ${{ github.action_path }}/bin/setup-environment.sh
+    - run: ${{ github.action_path }}/bin/deploy.sh
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
+        OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
+        OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
         OSS_PATH: ${{ inputs.oss-path }}
         LOCAL_PATH: ${{ inputs.local-path }}
         IGNORED_PATTERNS: ${{ inputs.ignored-patterns }}
         DELETE_FIRST: ${{ inputs.delete-first }}
-        _OSSUTIL_DOWNLOAD_URL: ${{ inputs.internal-ossutil-download-url }}
-        _OSSUTIL_WORKSPACE: ${{ inputs.internal-ossutil-workspace }}
-    - run: ${{ github.action_path }}/bin/download-ossutil.sh
-      shell: bash
-    - run: ${{ github.action_path }}/bin/setup-credentials.sh
-      shell: bash
-      env:
-        OSS_ACCESSKEY_ID: ${{ inputs.oss-accesskey-id }}
-        OSS_ACCESSKEY_SECRET: ${{ inputs.oss-accesskey-secret }}
-    - run: ${{ github.action_path }}/bin/deploy.sh
-      shell: bash
-    - run: ${{ github.action_path }}/bin/clear-credentials.sh
-      shell: bash
+        FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
+        OSSUTIL_DOWNLOAD_URL: https://gosspublic.alicdn.com/ossutil/1.7.14/ossutil64
