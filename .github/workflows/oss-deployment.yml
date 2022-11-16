@@ -20,42 +20,17 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Check out repository
-        uses: actions/checkout@v2
-
-      # Caches the executable of ossutil to avoid downloading again; disabled by
-      # default, uncomment the following step to enable caching
-      - name: Cache ossutil
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-ossutil
-        with:
-          path: /home/runner/ossutil/ossutil
-          key: ossutil64-${{ runner.os }}-${{ env.cache-name }}
-          restore-keys: |
-            ossutil64-${{ runner.os }}-
-            ossutil64-
+        uses: actions/checkout@v3
 
       # Deploys specified files to OSS
       - name: Deploy files to OSS
         uses: Yanghanlin/oss-deployment-action@v1
         with:
-          # Endpoint of "Access over Internet", e.g. oss-cn-hangzhou.aliyuncs.com
           oss-endpoint: oss-cn-hangzhou.aliyuncs.com
-          # Path to location you wish to deploy files to, e.g. oss://my-bucket/my-dir
           oss-path: oss://tree-diagram-sites/oss-deployment-action/
-          # Access Key ID of a Aliyun/Alibaba Cloud user with write access to OSS
           oss-accesskey-id: LTAI4FzrEJA5duCxjit3EEuv
-          # Access Key secret of the user identified by the previous Access Key ID
-          # Do NOT directly record the secret here; use secrets provided by GitHub
-          # and reference by its name instead
           oss-accesskey-secret: ${{ secrets.OSS_ACCESSKEY_SECRET }}
-          # Path to location in the repository workspace to deploy files from
-          # Optional; deploys the entire workspace by default; uncomment the following
-          # line to customize
-          # local-path: '.'
-          # Patterns to ignore files from deployment
-          # Optional; ignore .git* by default; uncomment the following line to customize
-          # ignored-patterns: '.git*'
-          # Whether to delete existing files before uploading
-          # Optional; false by default; uncomment to following line to customize
+          ignored-patterns: '.git*'
           delete-first: true
+          cache-ossutil: true
+          debug: ${{ secrets.ACTIONS_STEP_DEBUG }}
