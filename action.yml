@@ -46,6 +46,10 @@ inputs:
     description: 'Whether to enable debug logging'
     required: false
     default: 'false'
+  ossutil-version-:
+    description: 'Version of ossutil to download if none is found in PATH; this input parameter is undocumented and NOT guaranteed to be stable'
+    required: false
+    default: '1.7.15'
 
 runs:
   using: 'composite'
@@ -55,7 +59,7 @@ runs:
       shell: bash
       id: prepare-variables
       env:
-        OSSUTIL_VERSION: 1.7.14
+        OSSUTIL_VERSION: ${{ inputs.ossutil-version- }}
         DEBUG: ${{ inputs.debug }}
     - name: Set up cache
       uses: actions/cache@v3
