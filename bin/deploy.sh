@@ -26,7 +26,14 @@ try_ossutil() {
 setup_ossutil() {
     log "Setting up ossutil"
 
-    OSSUTIL_BINARY="$WORKSPACE/ossutil"
+    if [[ "$OS_TYPE" == "windows" ]]; then
+        OSSUTIL_EXTENSION=".exe"
+    else
+        OSSUTIL_EXTENSION=""
+    fi
+    OSSUTIL_DOWNLOAD_DIR="$WORKSPACE"
+    OSSUTIL_DOWNLOAD_DEST="ossutil.zip"
+    OSSUTIL_BINARY="$WORKSPACE/ossutil$OSSUTIL_EXTENSION"
     OSSUTIL_CONFIG_FILE="$WORKSPACE/.ossutilconfig"
     OSSUTIL_OUTPUT_DIR="$WORKSPACE/ossutil-output"
     OSSUTIL="$OSSUTIL_BINARY --config-file=$OSSUTIL_CONFIG_FILE"
@@ -35,7 +42,9 @@ setup_ossutil() {
         log "Using ossutil from cache"
     else
         log "Downloading ossutil"
-        curl -L -o "$OSSUTIL_BINARY" "$OSSUTIL_DOWNLOAD_URL"
+        curl --create-dirs --fail --location --output "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_DOWNLOAD_DEST" "$OSSUTIL_DOWNLOAD_URL"
+        (cd "$OSSUTIL_DOWNLOAD_DIR" && unzip -o "$OSSUTIL_DOWNLOAD_DEST")
+        mv "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_SPEC/ossutil64$OSSUTIL_EXTENSION" "$OSSUTIL_BINARY"
     fi
     chmod u+x "$OSSUTIL_BINARY"
 
