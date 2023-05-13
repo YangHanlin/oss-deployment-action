@@ -10,6 +10,12 @@ setup_workspace() {
     mkdir -p "$WORKSPACE"
 }
 
+setup_temp_dir() {
+    log "Setting up temporary directory"
+
+    TEMP_DIR="$(mktemp -d)"
+}
+
 try_ossutil() {
     log "Trying to find existing ossutil from PATH"
 
@@ -26,16 +32,25 @@ try_ossutil() {
 setup_ossutil() {
     log "Setting up ossutil"
 
-    OSSUTIL_BINARY="$WORKSPACE/ossutil"
+    if [[ "$OS_TYPE" == "windows" ]]; then
+        OSSUTIL_EXTENSION=".exe"
+    else
+        OSSUTIL_EXTENSION=""
+    fi
+    OSSUTIL_DOWNLOAD_DIR="$TEMP_DIR"
+    OSSUTIL_DOWNLOAD_DEST="ossutil.zip"
+    OSSUTIL_BINARY="$WORKSPACE/ossutil$OSSUTIL_EXTENSION"
     OSSUTIL_CONFIG_FILE="$WORKSPACE/.ossutilconfig"
-    OSSUTIL_OUTPUT_DIR="$WORKSPACE/ossutil-output"
+    OSSUTIL_OUTPUT_DIR="$TEMP_DIR/ossutil-output"
     OSSUTIL="$OSSUTIL_BINARY --config-file=$OSSUTIL_CONFIG_FILE"
 
     if [[ -f "$OSSUTIL_BINARY" ]]; then
         log "Using ossutil from cache"
     else
         log "Downloading ossutil"
-        curl -L -o "$OSSUTIL_BINARY" "$OSSUTIL_DOWNLOAD_URL"
+        curl --create-dirs --fail --location --output "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_DOWNLOAD_DEST" "$OSSUTIL_DOWNLOAD_URL"
+        (cd "$OSSUTIL_DOWNLOAD_DIR" && unzip -o "$OSSUTIL_DOWNLOAD_DEST")
+        mv "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_SPEC/$OSSUTIL_EXECUTABLE_NAME" "$OSSUTIL_BINARY"
     fi
     chmod u+x "$OSSUTIL_BINARY"
 
@@ -74,6 +89,7 @@ setup_environment() {
     start_group "Set up environment"
 
     setup_workspace
+    setup_temp_dir
     if [[ "$FORCE_SETUP_OSSUTIL" == "" ]]; then
         find_ossutil
     fi

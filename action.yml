@@ -46,16 +46,20 @@ inputs:
     description: 'Whether to enable debug logging'
     required: false
     default: 'false'
+  ossutil-version-:
+    description: 'Version of ossutil to download if none is found in PATH; this input parameter is undocumented and NOT guaranteed to be stable'
+    required: false
+    default: '1.7.15'
 
 runs:
   using: 'composite'
   steps:
     - name: Run script to prepare variables
-      run: ${{ github.action_path }}/bin/prepare-variables.sh
+      run: "'${{ github.action_path }}/bin/prepare-variables.sh'"
       shell: bash
       id: prepare-variables
       env:
-        OSSUTIL_VERSION: 1.7.14
+        OSSUTIL_VERSION: ${{ inputs.ossutil-version- }}
         DEBUG: ${{ inputs.debug }}
     - name: Set up cache
       uses: actions/cache@v3
@@ -64,7 +68,7 @@ runs:
         path: ${{ steps.prepare-variables.outputs.workspace }}
         key: ${{ steps.prepare-variables.outputs.cache-key }}
     - name: Run script to deploy
-      run: ${{ github.action_path }}/bin/deploy.sh
+      run: "'${{ github.action_path }}/bin/deploy.sh'"
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
@@ -78,6 +82,9 @@ runs:
         FORCE_SETUP_OSSUTIL: ${{ inputs.force-setup-ossutil }}
         DEBUG: ${{ inputs.DEBUG }}
         WORKSPACE: ${{ steps.prepare-variables.outputs.workspace }}
+        OS_TYPE: ${{ steps.prepare-variables.outputs.os-type }}
+        OSSUTIL_EXECUTABLE_NAME: ${{ steps.prepare-variables.outputs.ossutil-executable-name }}
+        OSSUTIL_SPEC: ${{ steps.prepare-variables.outputs.ossutil-spec }}
         OSSUTIL_DOWNLOAD_URL: ${{ steps.prepare-variables.outputs.ossutil-download-url }}
 
 branding:
