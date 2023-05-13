@@ -51,7 +51,7 @@ runs:
   using: 'composite'
   steps:
     - name: Run script to prepare variables
-      run: ${{ github.action_path }}/bin/prepare-variables.sh
+      run: "'${{ github.action_path }}/bin/prepare-variables.sh'"
       shell: bash
       id: prepare-variables
       env:
@@ -64,7 +64,7 @@ runs:
         path: ${{ steps.prepare-variables.outputs.workspace }}
         key: ${{ steps.prepare-variables.outputs.cache-key }}
     - name: Run script to deploy
-      run: ${{ github.action_path }}/bin/deploy.sh
+      run: "'${{ github.action_path }}/bin/deploy.sh'"
       shell: bash
       env:
         OSS_ENDPOINT: ${{ inputs.oss-endpoint }}
