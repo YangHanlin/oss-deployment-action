@@ -10,6 +10,12 @@ setup_workspace() {
     mkdir -p "$WORKSPACE"
 }
 
+setup_temp_dir() {
+    log "Setting up temporary directory"
+
+    TEMP_DIR="$(mktemp -d)"
+}
+
 try_ossutil() {
     log "Trying to find existing ossutil from PATH"
 
@@ -31,11 +37,11 @@ setup_ossutil() {
     else
         OSSUTIL_EXTENSION=""
     fi
-    OSSUTIL_DOWNLOAD_DIR="$WORKSPACE"
+    OSSUTIL_DOWNLOAD_DIR="$TEMP_DIR"
     OSSUTIL_DOWNLOAD_DEST="ossutil.zip"
     OSSUTIL_BINARY="$WORKSPACE/ossutil$OSSUTIL_EXTENSION"
     OSSUTIL_CONFIG_FILE="$WORKSPACE/.ossutilconfig"
-    OSSUTIL_OUTPUT_DIR="$WORKSPACE/ossutil-output"
+    OSSUTIL_OUTPUT_DIR="$TEMP_DIR/ossutil-output"
     OSSUTIL="$OSSUTIL_BINARY --config-file=$OSSUTIL_CONFIG_FILE"
 
     if [[ -f "$OSSUTIL_BINARY" ]]; then
@@ -83,6 +89,7 @@ setup_environment() {
     start_group "Set up environment"
 
     setup_workspace
+    setup_temp_dir
     if [[ "$FORCE_SETUP_OSSUTIL" == "" ]]; then
         find_ossutil
     fi
