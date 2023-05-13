@@ -44,7 +44,7 @@ setup_ossutil() {
         log "Downloading ossutil"
         curl --create-dirs --fail --location --output "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_DOWNLOAD_DEST" "$OSSUTIL_DOWNLOAD_URL"
         (cd "$OSSUTIL_DOWNLOAD_DIR" && unzip -o "$OSSUTIL_DOWNLOAD_DEST")
-        mv "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_SPEC/ossutil64$OSSUTIL_EXTENSION" "$OSSUTIL_BINARY"
+        mv "$OSSUTIL_DOWNLOAD_DIR/$OSSUTIL_SPEC/$OSSUTIL_EXECUTABLE_NAME" "$OSSUTIL_BINARY"
     fi
     chmod u+x "$OSSUTIL_BINARY"
 

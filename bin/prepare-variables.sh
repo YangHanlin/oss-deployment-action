@@ -7,10 +7,13 @@ prepare_variables() {
 
     if [[ "$RUNNER_OS" == "Windows" ]]; then
         OS_TYPE=windows
+        OSSUTIL_EXECUTABLE_NAME=ossutil64.exe
     elif [[ "$RUNNER_OS" == "Linux" ]]; then
         OS_TYPE=linux
+        OSSUTIL_EXECUTABLE_NAME=ossutil64
     elif [[ "$RUNNER_OS" == "macOS" ]]; then
         OS_TYPE=mac
+        OSSUTIL_EXECUTABLE_NAME=ossutilmac64
     else
         log "Error: unsupported runner OS '$RUNNER_OS'"
         exit 1
@@ -32,6 +35,7 @@ prepare_variables() {
     set_output os-type "$OS_TYPE"
     set_output arch-type "$ARCH_TYPE"
     set_output workspace "$WORKSPACE"
+    set_output ossutil-executable-name "$OSSUTIL_EXECUTABLE_NAME"
     set_output ossutil-spec "$OSSUTIL_SPEC"
     set_output ossutil-download-url "$OSSUTIL_DOWNLOAD_URL"
     set_output cache-key "$CACHE_KEY"

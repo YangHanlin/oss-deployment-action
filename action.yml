@@ -83,6 +83,7 @@ runs:
         DEBUG: ${{ inputs.DEBUG }}
         WORKSPACE: ${{ steps.prepare-variables.outputs.workspace }}
         OS_TYPE: ${{ steps.prepare-variables.outputs.os-type }}
+        OSSUTIL_EXECUTABLE_NAME: ${{ steps.prepare-variables.outputs.ossutil-executable-name }}
         OSSUTIL_SPEC: ${{ steps.prepare-variables.outputs.ossutil-spec }}
         OSSUTIL_DOWNLOAD_URL: ${{ steps.prepare-variables.outputs.ossutil-download-url }}
 
